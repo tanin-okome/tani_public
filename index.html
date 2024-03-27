@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MyDailyTimer</title>
+    <meta name="description" content="" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- css -->
+    <link rel="stylesheet" href="css/reset.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- js -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/main.js" defer></script>
+  </head>
+  <body>
+    <!-- ヘッダー -->
+    <header class="l_header py-3 ms-0">
+      <div class="container-fluid d-flex justify-content-between">
+        <div class="d-flex align-items-center">
+          <button class="btn me-3 text-white" id="js_prev-btn">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <h1
+            class="mb-0 fs-2 fw-bold text-white text-center"
+            id="js_calendar-header"
+          >
+            2022年1月
+          </h1>
+          <button class="btn ms-3 text-white" id="js_next-btn">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+        <div class="btn-container">
+          <i class="bi bi-stopwatch" id="timer_btn"></i>
+          <button
+            class="btn btn-lg text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#add-event-modal"
+          >
+            <i class="bi bi-calendar-plus" style="font-size: 2rem"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+    <!-- ヘッダー -->
+
+    <!-- 詳細ウインドウ -->
+    <div class="detail-window" id="detail-window" style="display: none">
+      <i class="bi bi-x" id="detail-window-back-btn"></i>
+      <p
+        class="click-detail-date-classname"
+        id="js-click-detail-date-classname"
+      ></p>
+      <div class="timer-count-wrapper">
+        <p class="timer-count-time-title">あなたがコントロールできた時間合計</p>
+        <p class="timer-count-time-content" id="js-timer-count-time-content">
+          12時間38分
+        </p>
+      </div>
+
+      <div id="detail-window-event-wrapper"></div>
+    </div>
+
+    <!-- タイマー要素 -->
+    <div id="timer" class="timer-container hidden" style="display: none">
+      <div class="timer-data-wrapper">
+        <div class="timer-display-today" id="timer-display-data"></div>
+        <div class="timer-display-count" id="timer-display-count">00:00:00</div>
+      </div>
+
+      <div class="timer-btn-wrapper">
+        <button class="btn btn-primary" id="timer-start-btn">Start</button>
+        <button
+          class="btn btn-danger"
+          id="timer-stop-btn"
+          style="display: none"
+          data-bs-toggle="modal"
+          data-bs-target="#count-add-event-modal"
+        >
+          STOP
+        </button>
+
+        <button class="btn btn-secondary" id="timer-back-btn">Back</button>
+      </div>
+    </div>
+
+    <!-- タイマーモーダル -->
+    <div
+      class="modal"
+      tabindex="-1"
+      id="count-add-event-modal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      aria-labelledby="addEventModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addEventModalLabel">予定の追加</h5>
+          </div>
+          <div class="modal-body">
+            <div>
+              <input
+                type="text"
+                class="form-control fs-5"
+                placeholder="予定タイトル"
+                autocomplete="off"
+                id="count_add-event_title"
+              />
+            </div>
+            <div class="mt-3">
+              <div class="input-group">
+                <div
+                  id="count_add-event_date"
+                  class="count_add-event_date_style"
+                ></div>
+                <div
+                  class="form-select form-select-sm count_add-event_time"
+                ></div>
+                <span class="p-1">–</span>
+                <div
+                  class="form-select form-select-sm count_add-event_time"
+                ></div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              取り消し
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              id="count_add-event_btn"
+            >
+              追加
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- タイマーモーダル -->
+    <!-- タイマー要素 -->
+
+    <!-- Calendar -->
+    <div class="text-center calendar" id="js_calendar"></div>
+
+    <!-- Add Event Modal -->
+    <div
+      class="modal"
+      tabindex="-1"
+      id="add-event-modal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      aria-labelledby="addEventModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addEventModalLabel">予定の追加</h5>
+          </div>
+          <div class="modal-body">
+            <div>
+              <input
+                type="text"
+                class="form-control fs-5"
+                placeholder="予定タイトル"
+                autocomplete="off"
+                id="js_add-event_title"
+              />
+            </div>
+            <div class="mt-3">
+              <div class="input-group">
+                <input
+                  type="date"
+                  class="form-control"
+                  id="js_add-event_date"
+                />
+                <input
+                  type="text"
+                  class="form-control js_add-event_time"
+                  placeholder="00:00"
+                  aria-label=".form-control"
+                />
+                <span class="p-1">–</span>
+                <input
+                  type="text"
+                  class="form-control js_add-event_time"
+                  placeholder="00:00"
+                  aria-label=".form-control"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              取り消し
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              id="js_add-event_btn"
+            >
+              追加
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Event Modal -->
+    <div
+      class="modal"
+      tabindex="-1"
+      id="edit-event-modal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      aria-labelledby="editEventModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editEventModalLabel">
+              予定の編集・削除
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <input
+                type="text"
+                class="form-control fs-5"
+                placeholder="予定タイトル"
+                autocomplete="off"
+                id="js_edit-event_title"
+              />
+            </div>
+            <div class="mt-3">
+              <div class="input-group">
+                <input
+                  type="date"
+                  class="form-control"
+                  id="js_edit-event_date"
+                />
+                <input
+                  type="text"
+                  class="form-control js_edit-event_time"
+                  placeholder="00:00"
+                  aria-label=".form-control"
+                  id="js_edit-event_date"
+                />
+                <span class="p-1">–</span>
+                <input
+                  type="text"
+                  class="form-control js_edit-event_time"
+                  placeholder="00:00"
+                  aria-label=".form-control"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+              id="js_delete-event_btn"
+            >
+              削除
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              id="js_edit-event_btn"
+            >
+              編集
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
